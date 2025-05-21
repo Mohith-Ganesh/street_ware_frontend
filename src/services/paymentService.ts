@@ -1,4 +1,4 @@
-const API_URL = 'http://35.154.232.105:3000';
+const API_URL = 'http://35.154.232.105:443';
 
 export const createPayment = async (token: string, orderId: number, amount: number, paymentMethod: string) => {
   const response = await fetch(`${API_URL}/payments`, {
