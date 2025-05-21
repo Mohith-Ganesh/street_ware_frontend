@@ -23,7 +23,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <ShoppingBag className="h-8 w-8 text-black" />
-              <span className="ml-2 text-xl font-bold text-black">STREET WARE</span>
+              <span className="ml-2 text-xl font-bold text-black">STREET WEAR</span>
             </Link>
             
             {/* Desktop Navigation */}
