@@ -19,7 +19,7 @@ const AdminNavbar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <ShoppingBag className="h-8 w-8 text-white" />
-              <span className="ml-2 text-xl font-bold text-white">STREET WARE ADMIN</span>
+              <span className="ml-2 text-xl font-bold text-white">STREET WEAR ADMIN</span>
             </div>
           </div>
           
