@@ -1,4 +1,4 @@
-const API_URL = 'https://35.154.232.105:3000';
+const API_URL = 'https://street-ware-backend.onrender.com';
 
 export const createPayment = async (token: string, orderId: number, amount: number, paymentMethod: string) => {
   const response = await fetch(`${API_URL}/payments`, {
