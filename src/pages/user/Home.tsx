@@ -150,7 +150,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Summer Sale Up to 50% Off</h2>
+              <h2 className="text-3xl font-bold mb-4">Winter Sale Up to 50% Off</h2>
               <p className="text-gray-300 mb-6">
                 The biggest sale of the season is here. Refresh your wardrobe with the latest styles.
                 Limited time offer.
@@ -164,7 +164,7 @@ const Home = () => {
             </div>
             <div className="hidden md:block">
               <img 
-                src="https://images.pexels.com/photos/5980583/pexels-photo-5980583.jpeg" 
+                src="https://res.cloudinary.com/dttnhad6r/image/upload/v1747852093/pexels-pixabay-325876_tqvrps.jpg" 
                 alt="Summer Sale" 
                 className="w-full h-96 object-cover"
               />
