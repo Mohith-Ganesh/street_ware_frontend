@@ -1,4 +1,4 @@
-const API_URL = 'http://35.154.232.105:443';
+const API_URL = 'https://35.154.232.105:443';
 
 const mockProducts = [
   {
