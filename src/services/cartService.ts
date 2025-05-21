@@ -1,4 +1,4 @@
-const API_URL = 'https://35.154.232.105:443';
+const API_URL = 'https://35.154.232.105:3000';
 
 export const getCart = async (token: string) => {
   const response = await fetch(`${API_URL}/cart`, {
