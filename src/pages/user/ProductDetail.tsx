@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductById } from '../../services/productService';
-import { useAuth } from '../../context/AuthContext';
-import { useCart } from '../../context/CartContext';
-import { Heart, ShoppingBag, Minus, Plus, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
 
 interface Product {
   product_id: number;
@@ -21,11 +19,7 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState('');
-  
-  const { isAuthenticated } = useAuth();
-  const { addItem } = useCart();
   
   useEffect(() => {
     const fetchProduct = async () => {
@@ -45,31 +39,18 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
   
-  const handleAddToCart = () => {
+  const handleWhatsAppClick = () => {
     if (!product) return;
     
-    if (!isAuthenticated) {
-      window.location.href = '/login';
-      return;
-    }
+    const message = `Hi! I'm interested in the ${product.name} (Product ID: ${product.product_id}). Could you please provide more information?`;
+    const phoneNumber = '+1234567890'; // Replace with your WhatsApp business number
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
-    addItem(product.product_id, quantity);
-  };
-  
-  const incrementQuantity = () => {
-    if (product && quantity < product.stock_quantity) {
-      setQuantity(quantity + 1);
-    }
-  };
-  
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    window.open(whatsappUrl, '_blank');
   };
   
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
@@ -133,109 +114,86 @@ const ProductDetail = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
             
-            <div className="mb-4">
+            <div className="mb-6">
               {product.discounted_price ? (
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold text-gray-900 mr-4">{formatPrice(product.discounted_price)}</span>
-                  <span className="text-lg text-gray-500 line-through">{formatPrice(product.price)}</span>
-                  <span className="ml-4 px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">
+                  <span className="text-3xl font-bold text-gray-900 mr-4">{formatPrice(product.discounted_price)}</span>
+                  <span className="text-xl text-gray-500 line-through">{formatPrice(product.price)}</span>
+                  <span className="ml-4 px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">
                     {Math.round((1 - product.discounted_price / product.price) * 100)}% OFF
                   </span>
                 </div>
               ) : (
-                <span className="text-2xl font-bold text-gray-900">{formatPrice(product.price)}</span>
+                <span className="text-3xl font-bold text-gray-900">{formatPrice(product.price)}</span>
               )}
             </div>
             
-            <div className="border-t border-gray-200 py-4">
-              <p className="text-gray-700 mb-6">{product.description || 'No description available for this product.'}</p>
+            <div className="border-t border-gray-200 py-6">
+              <p className="text-gray-700 mb-6 text-lg leading-relaxed">
+                {product.description || 'No description available for this product.'}
+              </p>
               
               {/* Product Details */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Product Details</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="mb-8">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Product Details</h3>
+                <div className="grid grid-cols-1 gap-4 text-base">
                   {product.size && (
-                    <div>
-                      <span className="font-medium text-gray-500">Size:</span> {product.size}
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="font-medium text-gray-500">Size:</span> 
+                      <span className="text-gray-900">{product.size}</span>
                     </div>
                   )}
                   {product.color && (
-                    <div>
-                      <span className="font-medium text-gray-500">Color:</span> {product.color}
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="font-medium text-gray-500">Color:</span> 
+                      <span className="text-gray-900">{product.color}</span>
                     </div>
                   )}
-                  <div>
-                    <span className="font-medium text-gray-500">Availability:</span>{' '}
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="font-medium text-gray-500">Availability:</span>
                     {product.stock_quantity > 0 ? (
-                      <span className="text-green-600">In Stock ({product.stock_quantity} available)</span>
+                      <span className="text-green-600 font-medium">In Stock ({product.stock_quantity} available)</span>
                     ) : (
-                      <span className="text-red-600">Out of Stock</span>
+                      <span className="text-red-600 font-medium">Out of Stock</span>
                     )}
                   </div>
                 </div>
               </div>
               
-              {/* Quantity Selector */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Quantity</h3>
-                <div className="flex items-center">
-                  <button
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                    className="p-2 border border-gray-300 rounded-l-md focus:outline-none disabled:opacity-50"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <input
-                    type="number"
-                    min="1"
-                    max={product.stock_quantity}
-                    value={quantity}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value);
-                      if (!isNaN(val) && val >= 1 && val <= product.stock_quantity) {
-                        setQuantity(val);
-                      }
-                    }}
-                    className="w-16 text-center border-t border-b border-gray-300 focus:outline-none py-2"
-                  />
-                  <button
-                    onClick={incrementQuantity}
-                    disabled={quantity >= product.stock_quantity}
-                    className="p-2 border border-gray-300 rounded-r-md focus:outline-none disabled:opacity-50"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-              
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              {/* WhatsApp Contact Button */}
+              <div className="space-y-4">
                 <button
-                  onClick={handleAddToCart}
-                  disabled={product.stock_quantity === 0}
-                  className="flex-1 flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-black hover:bg-gray-800 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleWhatsAppClick}
+                  className="w-full flex items-center justify-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
                 >
-                  <ShoppingBag className="mr-2 h-5 w-5" />
-                  Add to Cart
+                  <MessageCircle className="mr-3 h-6 w-6" />
+                  Contact us on WhatsApp
                 </button>
-                <button
-                  className="flex-1 flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
-                >
-                  <Heart className="mr-2 h-5 w-5" />
-                  Add to Wishlist
-                </button>
+                
+                <p className="text-sm text-gray-500 text-center">
+                  Get instant support and place your order directly through WhatsApp
+                </p>
               </div>
             </div>
             
             {/* Shipping & Returns */}
             <div className="mt-8 border-t border-gray-200 pt-6">
               <div className="flex items-center mb-4">
-                <h3 className="text-sm font-medium text-gray-900">Shipping & Returns</h3>
+                <h3 className="text-lg font-medium text-gray-900">Shipping & Returns</h3>
               </div>
-              <div className="space-y-2 text-sm text-gray-700">
-                <p>Free standard shipping on orders over $20</p>
-                <p>Free returns within 30 days</p>
+              <div className="space-y-3 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                  <p>Free standard shipping on orders over $50</p>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                  <p>Free returns within 30 days</p>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                  <p>Express delivery available</p>
+                </div>
               </div>
             </div>
           </div>

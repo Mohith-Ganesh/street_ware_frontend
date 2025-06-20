@@ -1,8 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { useCart } from '../../context/CartContext';
-import { ShoppingBag } from 'lucide-react';
 
 interface ProductCardProps {
   product: {
@@ -17,24 +14,9 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { isAuthenticated } = useAuth();
-  const { addItem } = useCart();
-  
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (isAuthenticated) {
-      addItem(product.product_id, 1);
-    } else {
-      // Redirect to login or show login modal
-      window.location.href = '/login';
-    }
-  };
-
-  // Format price with INR currency
+  // Format price with USD currency
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
@@ -50,13 +32,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             alt={product.name}
             className="h-60 w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
-          <button
-            onClick={handleAddToCart}
-            className="absolute bottom-4 right-4 p-2 bg-black text-white rounded-full opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-            title="Add to Cart"
-          >
-            <ShoppingBag className="h-5 w-5" />
-          </button>
         </div>
         
         <div className="p-4 flex flex-col">
