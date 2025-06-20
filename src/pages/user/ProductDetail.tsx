@@ -175,27 +175,6 @@ const ProductDetail = () => {
                 </p>
               </div>
             </div>
-            
-            {/* Shipping & Returns */}
-            <div className="mt-8 border-t border-gray-200 pt-6">
-              <div className="flex items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Shipping & Returns</h3>
-              </div>
-              <div className="space-y-3 text-sm text-gray-700">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                  <p>Free standard shipping on orders over $50</p>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                  <p>Free returns within 30 days</p>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                  <p>Express delivery available</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
