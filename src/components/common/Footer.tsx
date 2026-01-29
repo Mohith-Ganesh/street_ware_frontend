@@ -6,7 +6,18 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">HELP</h3>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li><Link to="/" className="hover:text-white">Shop at STREETWEAR.com</Link></li>
+              <li><Link to="/" className="hover:text-white">Product</Link></li>
+              <li><Link to="/" className="hover:text-white">Payment</Link></li>
+              <li><Link to="/" className="hover:text-white">Shipping</Link></li>
+              <li><Link to="/" className="hover:text-white">Exchanges and Returns</Link></li>
+            </ul>
+          </div>
+          
           <div>
             <h3 className="text-lg font-medium mb-4">FOLLOW US</h3>
             <ul className="space-y-2 text-sm text-gray-300">
